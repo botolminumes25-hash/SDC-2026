@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Ocean</title>
+
+    <style>
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: white;
+
+            overflow-x: hidden;
+
+            background: #0498c7;
+        }
+
+
+        /* =====================================================
+           BACKGROUND PANTAI
+           
+           GANTI FOTO DI SINI
+        ===================================================== */
+
+        .background {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: -10;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 100, 150, 0.12),
+                    rgba(0, 90, 130, 0.18)
+                ),
+                url("pantai.png");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+        }
+
+
+        /* =====================================================
+           EFEK OVERLAY
+        ===================================================== */
+
+        .background::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(0, 110, 160, 0.08),
+                    rgba(0, 120, 160, 0.05) 50%,
+                    rgba(240, 205, 140, 0.08) 100%
+                );
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           CAHAYA
+        ===================================================== */
+
+        .sun-light {
+            position: fixed;
+
+            width: 450px;
+            height: 450px;
+
+            top: -230px;
+            right: -120px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255, 255, 255, 0.25);
+
+            filter: blur(90px);
+
+            pointer-events: none;
+
+            z-index: -5;
+        }
+
+
+        /* =====================================================
+           GELEMBUNG AIR
+        ===================================================== */
+
+        .bubbles {
+            position: fixed;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: -2;
+        }
+
+        .bubble {
+            position: absolute;
+
+            bottom: -30px;
+
+            width: 10px;
+            height: 10px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.7);
+
+            background:
+                rgba(255, 255, 255, 0.08);
+
+            animation:
+                bubbleUp
+                linear
+                infinite;
+        }
+
+        .bubble:nth-child(1) {
+            left: 10%;
+            animation-duration: 9s;
+        }
+
+        .bubble:nth-child(2) {
+            left: 25%;
+            width: 7px;
+            height: 7px;
+            animation-duration: 12s;
+            animation-delay: 2s;
+        }
+
+        .bubble:nth-child(3) {
+            left: 42%;
+            width: 14px;
+            height: 14px;
+            animation-duration: 10s;
+            animation-delay: 4s;
+        }
+
+        .bubble:nth-child(4) {
+            left: 63%;
+            animation-duration: 13s;
+            animation-delay: 1s;
+        }
+
+        .bubble:nth-child(5) {
+            left: 80%;
+            width: 8px;
+            height: 8px;
+            animation-duration: 11s;
+            animation-delay: 3s;
+        }
+
+        @keyframes bubbleUp {
+
+            0% {
+                transform:
+                    translateY(0)
+                    scale(0.5);
+
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.6;
+            }
+
+            80% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform:
+                    translateY(-110vh)
+                    translateX(40px)
+                    scale(1.2);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .container {
+            width: 100%;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding:
+                35px 20px 50px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            min-height: 55vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           LOGO FOTO OMBAK
+           
+           GANTI FOTO DI SINI
+        ===================================================== */
+
+        .ocean-logo {
+
+            width: 125px;
+            height: 125px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border:
+                4px solid
+                rgba(255, 255, 255, 0.9);
+
+            box-shadow:
+                0 8px 30px
+                rgba(0, 60, 100, 0.35),
+
+                0 0 25px
+                rgba(255, 255, 255, 0.25);
+
+            margin-bottom: 22px;
+
+            animation:
+                logoFloat
+                4s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-8px);
+            }
+        }
+
+
+        /* =====================================================
+           JUDUL
+        ===================================================== */
+
+        .header h1 {
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-style: italic;
+
+            font-size:
+                clamp(
+                    45px,
+                    10vw,
+                    72px
+                );
+
+            line-height: 1;
+
+            margin-bottom: 18px;
+
+            text-shadow:
+                0 4px 15px
+                rgba(0, 60, 100, 0.4);
+        }
+
+
+        .header p {
+
+            max-width: 500px;
+
+            font-size:
+                clamp(
+                    15px,
+                    3vw,
+                    18px
+                );
+
+            line-height: 1.6;
+
+            color:
+                rgba(255, 255, 255, 0.95);
+
+            text-shadow:
+                0 2px 8px
+                rgba(0, 60, 100, 0.35);
+        }
+
+
+        /* =====================================================
+           LINK SECTION
+        ===================================================== */
+
+        .links-section {
+
+            padding-bottom: 40px;
+        }
+
+
+        .section-title {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .section-title h2 {
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            font-style: italic;
+
+            font-size:
+                clamp(
+                    25px,
+                    6vw,
+                    34px
+                );
+
+            margin-bottom: 8px;
+
+            text-shadow:
+                0 3px 10px
+                rgba(0, 60, 100, 0.4);
+        }
+
+
+        .section-title p {
+
+            font-size: 14px;
+
+            color:
+                rgba(255, 255, 255, 0.9);
+        }
+
+
+        /* =====================================================
+           LINK CONTAINER
+        ===================================================== */
+
+        #link-container {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+
+        /* =====================================================
+           LINK CARD
+        ===================================================== */
+
+        .link-card {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            width: 100%;
+
+            min-height: 82px;
+
+            padding:
+                13px 20px;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 24px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.55);
+
+            background:
+                rgba(255, 255, 255, 0.22);
+
+            backdrop-filter:
+                blur(12px);
+
+            -webkit-backdrop-filter:
+                blur(12px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 60, 100, 0.18);
+
+            overflow: hidden;
+
+            transition:
+                0.3s ease;
+        }
+
+
+        /* Kilauan pada kartu */
+
+        .link-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 70%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.3),
+                    transparent
+                );
+
+            transform:
+                skewX(-20deg);
+
+            transition:
+                0.6s ease;
+        }
+
+
+        .link-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            background:
+                rgba(255, 255, 255, 0.3);
+
+            box-shadow:
+                0 14px 35px
+                rgba(0, 60, 100, 0.3);
+        }
+
+
+        .link-card:hover::before {
+
+            left: 140%;
+        }
+
+
+        /* =====================================================
+           ICON
+        ===================================================== */
+
+        .link-icon {
+
+            width: 55px;
+            height: 55px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-right: 16px;
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.25);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.4);
+
+            font-size: 25px;
+
+            box-shadow:
+                inset 0 0 12px
+                rgba(255,255,255,0.15);
+        }
+
+
+        /* =====================================================
+           TEXT
+        ===================================================== */
+
+        .link-text {
+
+            flex: 1;
+
+            min-width: 0;
+        }
+
+
+        .link-text h3 {
+
+            font-size: 18px;
+
+            margin-bottom: 4px;
+
+            text-shadow:
+                0 2px 5px
+                rgba(0, 60, 100, 0.35);
+        }
+
+
+        .link-text p {
+
+            font-size: 13px;
+
+            color:
+                rgba(255,255,255,0.88);
+
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           ARROW
+        ===================================================== */
+
+        .link-arrow {
+
+            font-size: 27px;
+
+            margin-left: 10px;
+
+            transition:
+                0.3s ease;
+        }
+
+
+        .link-card:hover
+        .link-arrow {
+
+            transform:
+                translateX(6px);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+
+            text-align: center;
+
+            padding:
+                25px 10px 40px;
+
+            color:
+                rgba(255,255,255,0.9);
+
+            font-size: 13px;
+
+            text-shadow:
+                0 2px 6px
+                rgba(0,60,100,0.4);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE HP
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding-left: 14px;
+
+                padding-right: 14px;
+            }
+
+
+            .header {
+
+                min-height: 55vh;
+            }
+
+
+            .ocean-logo {
+
+                width: 100px;
+                height: 100px;
+            }
+
+
+            .link-card {
+
+                min-height: 76px;
+
+                padding:
+                    11px 14px;
+
+                border-radius: 20px;
+            }
+
+
+            .link-icon {
+
+                width: 47px;
+                height: 47px;
+
+                margin-right: 12px;
+
+                font-size: 21px;
+
+                border-radius: 14px;
+            }
+
+
+            .link-text h3 {
+
+                font-size: 16px;
+            }
+
+
+            .link-text p {
+
+                font-size: 12px;
+            }
+
+
+            .link-arrow {
+
+                font-size: 22px;
+            }
+        }
+
+
+        /* =====================================================
+           HP KECIL
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .container {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .link-card {
+
+                padding:
+                    10px 11px;
+            }
+
+
+            .link-icon {
+
+                width: 43px;
+                height: 43px;
+
+                margin-right: 9px;
+            }
+
+
+            .link-text h3 {
+
+                font-size: 15px;
+            }
+
+
+            .link-text p {
+
+                font-size: 11px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         FOTO BACKGROUND
+         
+         GANTI "pantai.jpg" DENGAN FOTO KAMU
+    ===================================================== -->
+
+    <div class="background"></div>
+
+
+    <!-- Cahaya -->
+
+    <div class="sun-light"></div>
+
+
+    <!-- Gelembung -->
+
+    <div class="bubbles">
+
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <section class="header">
+
+
+            <!-- =============================================
+                 FOTO LOGO OMBAK
+
+                 GANTI "logo-ombak.jpg"
+                 DENGAN FOTO KAMU
+            ============================================== -->
+
+            <img
+                class="ocean-logo"
+                src="logo-ombak.png"
+                alt="Foto ombak"
+            >
+
+
+            <h1>
+            Scout Dewata Competition 2026
+            </h1>
+
+
+            <p>
+                Selamat datang di Scout Dewata Comprtition.
+                Temukan berbagai link dan sosial media
+                di bawah ini.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             LINKS
+        ================================================== -->
+
+        <section class="links-section">
+
+
+            <div class="section-title">
+
+                <h2>
+                    🌴 Explore My Links 🌴
+                </h2>
+
+                <p>
+                    Pilih tempat yang ingin kamu kunjungi.
+                </p>
+
+            </div>
+
+
+            <!-- LINK AKAN DIBUAT OTOMATIS -->
+
+            <div id="link-container"></div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        🌊 &nbsp; Made with love &nbsp; | &nbsp;
+        Enjoy the Ocean 🏝️
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+
+         ⭐ BAGIAN INI SAJA YANG DIGUNAKAN
+         UNTUK MENAMBAHKAN LINK
+    ===================================================== -->
+
+    <script>
+
+
+        /* =================================================
+           
+           🌊 DAFTAR LINK 🌊
+
+           Untuk menambah tombol:
+
+           1. Copy salah satu blok
+           2. Paste di bawahnya
+           3. Ganti nama
+           4. Ganti icon
+           5. Ganti deskripsi
+           6. Ganti link
+
+        ================================================= */
+
+
+        const links = [
+
+            {
+                nama: "Juknis",
+                icon: "▶️",
+                deskripsi:
+                    "Seluruh petunjuk teknis ada disini",
+                link:
+                    "https://drive.google.com/file/d/1ZgjfNqJZYMDLbYloMscSEr36JIFFBU5I/view?usp=drive_link"
+            },
+
+            {
+                nama: "Dokumentasi",
+                icon: "🎵",
+                deskripsi:
+                    "Cari dengan teliti",
+                link:
+                    "https://drive.google.com/drive/folders/1tIrnBfSARcWrW8Y0QUx2EZi1bzBI8Mwj?usp=drive_link"
+            },
+
+            {
+                nama: "TikTok",
+                icon: "🎵",
+                deskripsi:
+                    "Lihat video TikTok Scout Dewata",
+                link:
+                    "https://www.tiktok.com/@scoutofdewata?is_from_webapp=1&sender_device=pc"
+            },
+
+            {
+                nama: "WhatsApp",
+                icon: "💬",
+                deskripsi:
+                    "Hubungi saya melalui WhatsApp",
+                link:
+                    "https://wa.me/6285717271981"
+            }
+
+
+        ];
+
+
+        /* =================================================
+           
+           ⚙️ SISTEM OTOMATIS
+           
+           TIDAK PERLU DIUBAH
+
+        ================================================= */
+
+
+        const linkContainer =
+            document.getElementById(
+                "link-container"
+            );
+
+        links.forEach(function(item) {
+            const linkCard =
+                document.createElement("a");
+            linkCard.className =
+                "link-card";
+            linkCard.href =
+                item.link;
+            linkCard.target =
+                "_blank";
+            linkCard.rel =
+                "noopener noreferrer";
+            linkCard.innerHTML = `
+                <div class="link-icon">
+                    ${item.icon}
+                </div>
+
+
+                <div class="link-text">
+                    <h3>
+                        ${item.nama}
+                    </h3>
+                    <p>
+                        ${item.deskripsi}
+                    </p>
+                </div>
+                <div class="link-arrow">
+                    →
+                </div>
+            `;
+            linkContainer.appendChild(
+                linkCard
+            );
+        });
+
+    </script>
+</body>
+</html>
